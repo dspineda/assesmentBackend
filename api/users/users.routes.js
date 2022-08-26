@@ -1,6 +1,7 @@
 const express = require('express');
 const controller = require('./users.controller')
 const { registerLogin } = require('./users.JoiSchema');
+const { isAuthenticated } = require('../../auth/auth.service');
 
 const {
   getAllUsersHandler,
@@ -15,8 +16,8 @@ const {
 router.get('/', getAllUsersHandler);
 router.post('/', registerLogin, createUserHandler);
 router.get('/:id', getUserByIdHandler);
-router.get('/:id', updateUserHandler);
-router.get('/:id', deleteUserHandler);
+router.patch('/:id',  isAuthenticated, updateUserHandler);
+router.delete('/:id', isAuthenticated, deleteUserHandler);
 
 
 
