@@ -4,20 +4,12 @@ function getAllFavorites() {
   return Favorite.find({});
 }
 
-function getFavoriteById(id) {
-  return Favorite.findById(id);
-}
-
-function findFavoriteByTitle(title){
-  return Favorite.findOne({ title })
-}
-
 function createFavorite(favorite) {
   return Favorite.create(favorite);
 }
 
-function updateFavorite(id, favorite) {
-  return Favorite.findByIdAndUpdate(id, favorite, { new: true });
+function getSingleFavorite(id) {
+  return Favorite.findById(id);
 }
 
 function deleteFavorite(id) {
@@ -26,9 +18,7 @@ function deleteFavorite(id) {
 
 module.exports = {
   getAllFavorites,
-  getFavoriteById,
-  findFavoriteByTitle,
   createFavorite,
-  updateFavorite,
+  getSingleFavorite,
   deleteFavorite
 }

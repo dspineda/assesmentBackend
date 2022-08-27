@@ -16,7 +16,7 @@ const {
 router.get('/', getAllUsersHandler);
 router.post('/', registerLogin, createUserHandler);
 router.get('/:id', getUserByIdHandler);
-router.patch('/:id',  isAuthenticated, updateUserHandler);
+router.patch('/:id',   updateUserHandler);
 router.delete('/:id', isAuthenticated, deleteUserHandler);
 
 

@@ -19,12 +19,21 @@ async function loginUserHandler(req, res) {
 				.json({ message: 'User or password not registred' });
 		}
     const token = await signToken({email: user.email})
-    return res.json({token, profile: user.profile})
+    return res.json({token}).status(200)
     
 	} catch (error) {
 		return res.status(500).json({ error });
 	}
 }
+
+
+
+
+
+
+
+
+
 
 module.exports = {
   loginUserHandler,

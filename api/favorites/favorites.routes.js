@@ -1,23 +1,21 @@
 const express = require('express');
 const controller = require('./favorites.controller')
+const { isAuthenticated } = require('../../auth/auth.service')
 
 const {
   getAllFavoritesHandler,
-  getFavoriteByIdHandler,
-  findFavoriteByTitleHandler,
   createFavoriteHandler,
-  updateFavoriteHandler,
+  getSingleFavoriteHandler,
   deleteFavoriteHandler
 } = controller
 
 const router = express.Router();
 
-router.get('/', getAllFavoritesHandler);
-router.get('/:id', getFavoriteByIdHandler);
-router.post('/', createFavoriteHandler);
-router.put('/:id', updateFavoriteHandler);
-router.delete('/:id', deleteFavoriteHandler);
-router.get('/:title', findFavoriteByTitleHandler);
+router.get('/',  isAuthenticated, getAllFavoritesHandler);
+router.post('/', isAuthenticated, createFavoriteHandler);
+router.get('/:id', isAuthenticated, getSingleFavoriteHandler);
+router.delete('/:id', isAuthenticated, deleteFavoriteHandler);
+
 
 module.exports = router;
 

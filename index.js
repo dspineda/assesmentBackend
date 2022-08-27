@@ -9,11 +9,13 @@ const app = express()
 const PORT = process.env.PORT || 8080;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-app.listen(PORT, async () => {
+const server = app.listen(PORT, async () => {
   configExpress(app)
   await connectDB()
   routesConfig(app)
   console.log( `Server running on port http://localhost:${PORT} in ${NODE_ENV} mode`)
 })
+
+module.exports = { app, server };
 
 
