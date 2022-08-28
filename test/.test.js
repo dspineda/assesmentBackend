@@ -6,8 +6,6 @@ const User = require('../api/users/users.model');
 const Favorites = require('../api/favorites/favorites.model');
 const api = supertest(app);
 
-
-
 const initialUsers = [
 	{
 		userName: 'testUser',
@@ -125,8 +123,66 @@ describe('FAVORITES', () => {
 		expect(contents).toContain(newFavorite.title);
 	}, 100000);
 
-	afterAll(() => {
-		mongoose.connection.close();
-		server.close();
-	});
+	test('GET favorite by id', async () => {
+		const signIn = {
+			email: 'werw@mail.com',
+			password: 'testPassworD15',
+		};
+
+		const response = await api.post('/api/auth/local/login').send(signIn);
+		const token = response.body.token;
+		const newFavorite = {
+			title: 'testTitle',
+			description: 'testDescription',
+			url: 'testUrl',
+			name: 'testName',
+		};
+		const response2 = await api
+			.post('/api/favs')
+			.set('Authorization', `Bearer ${token}`)
+			.send(newFavorite)
+			.expect(201)
+			.expect('Content-Type', /application\/json/);
+		const response3 = await api
+			.get(`/api/favs/${response2.body._id}`)
+			.set('Authorization', `Bearer ${token}`);
+		expect(response3.body.title).toBe(newFavorite.title);
+	}, 100000);
+
+	test('DELETE favorite by id ', async () => {
+		const signIn = {
+			email: 'werw@mail.com',
+			password: 'testPassworD15',
+		};
+
+		const response = await api.post('/api/auth/local/login').send(signIn);
+		const token = response.body.token;
+		const newFavorite = {
+			title: 'testTitle',
+			description: 'testDescription',
+			url: 'testUrl',
+			name: 'testName',
+		};
+		const response2 = await api
+			.post('/api/favs')
+			.set('Authorization', `Bearer ${token}`)
+			.send(newFavorite)
+			.expect(201)
+			.expect('Content-Type', /application\/json/);
+		await api
+			.delete(`/api/favs/${response2.body._id}`)
+			.set('Authorization', `Bearer ${token}`)
+			.expect(200);
+		const response3 = await api
+			.get('/api/favs')
+			.set('Authorization', `Bearer ${token}`);
+		const contents = response3.body.map(favorite => favorite.title);
+		expect(response3.body).toHaveLength(0);
+		expect(contents).not.toContain(newFavorite.title);
+	}, 100000);
+});
+
+afterAll(() => {
+	mongoose.connection.close();
+	server.close();
 });
