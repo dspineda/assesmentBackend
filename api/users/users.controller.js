@@ -41,7 +41,7 @@ async function getUserByIdHandler(req, res) {
 async function updateUserHandler(req, res) {
   const { user } = req;
   const { id } = req.params;
-  if (!(user.id === id)) {
+  if (!(user._id === id)) {
     console.log('Cannot update another user than yourself');
     return res.status(401).json({ message: 'unAuthorized' });
   }
@@ -67,7 +67,7 @@ async function deleteUserHandler(req, res) {
   try {
     await deleteUser(id);
     console.log(`User ${id} eliminated`);
-    return res.status(200).json({ message: 'User eliminated' });
+    return res.status(200).json({ message: 'User deleted' });
   } catch (error) {
     console.error(`[ERROR]: ${error}`);
     return res.status(500).json({ error });

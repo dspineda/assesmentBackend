@@ -1,4 +1,4 @@
-const healthcheck = require('./api/healthcheck/index')
+const healthcheck = require('./api/healthcheck/healthcheck.routes')
 const user = require('./api/users/users.routes')
 const favorites = require('./api/favorites/favorites.routes')
 const authlocal = require('./auth/local/local.routes')
