@@ -6,11 +6,6 @@ const { SALT_ROUNDS } = process.env;
 
 const UserSchema = new mongoose.Schema(
 	{
-		userName: {
-			type: String,
-			required: true,
-			unique: true,
-		},
 		email: {
 			type: String,
 			required: true,
@@ -21,17 +16,10 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		name: {
-			type: String,
-			required: true,
-		},
-		lastName: {
-			type: String,
-			required: true,
-		},
+
 		favoritesList: {
-			type: Array,
-			default: [],
+			type: mongoose.Schema.Types.ObjectId,
+      ref: 'FavoritesList',
 		},
 	},
 	{
@@ -40,14 +28,11 @@ const UserSchema = new mongoose.Schema(
 );
 
 UserSchema.virtual('profile').get(function profile() {
-  const { userName, name, lastName, email } = this;
+	const { email } = this;
 
-  return {
-    userName,
-    name,
-    lastName,
-    email,
-  };
+	return {
+		email,
+	};
 });
 
 UserSchema.pre('save', async function save(next) {

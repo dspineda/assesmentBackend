@@ -8,20 +8,12 @@ const api = supertest(app);
 
 const initialUsers = [
 	{
-		userName: 'testUser',
-		name: 'Test name',
-		lastName: 'Test last name',
 		email: 'daip@mail.com',
 		password: 'testPassworD12',
-		favoritesList: [],
 	},
 	{
-		userName: 'testUser2',
-		name: 'Test name 2',
-		lastName: 'Test last name 2',
 		email: 'werw@mail.com',
 		password: 'testPassworD15',
-		favoritesList: [],
 	},
 ];
 
@@ -37,18 +29,12 @@ beforeEach(async () => {
 }, 1000000);
 
 describe('USERS', () => {
-	test('Get all users', async () => {
-		const response = await api.get('/api/users');
-		expect(response.body).toHaveLength(2);
-	});
 
 	test('POST Register', async () => {
 		const newUser = {
-			userName: 'Steven',
 			email: 'david@mail.com',
 			password: '*/abCD12',
-			name: 'dav',
-			lastName: 'Pinded',
+
 		};
 
 		await api
