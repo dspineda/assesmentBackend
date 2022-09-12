@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const { SALT_ROUNDS } = process.env;
 
+
 const UserSchema = new mongoose.Schema(
 	{
 		email: {
@@ -17,10 +18,10 @@ const UserSchema = new mongoose.Schema(
 			required: true,
 		},
 
-		favoritesList: {
+		lists: [{
 			type: mongoose.Schema.Types.ObjectId,
-      ref: 'FavoritesList',
-		},
+      ref: 'ListFavorite',
+		}],
 	},
 	{
 		timestamps: true,

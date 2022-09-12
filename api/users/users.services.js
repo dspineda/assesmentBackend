@@ -10,7 +10,7 @@ function findUserByEmail(email) {
 
 
 function createUser(user) {
-	return User.create(user);
+	return User.create(user)
 }
 
 
@@ -18,17 +18,9 @@ function createUser(user) {
 function addFavoriteByUser(id, favorite) {
 	return User.findByIdAndUpdate(
 		id,
-		{ $push: { favoritesList: favorite } },
+		{ $push: { lists: favorite } },
 		{ new: true }
 	);
-}
-
-function deleteFavoriteByUser(id, favorite) {
-  return User.findByIdAndUpdate(
-    id,
-    { $pull: { favoritesList: favorite } },
-    { new: true }
-  );
 }
 
 
@@ -37,6 +29,5 @@ module.exports = {
 	getAllUsers,
 	findUserByEmail,
 	createUser,
-  addFavoriteByUser,
-  deleteFavoriteByUser
+  addFavoriteByUser
 };

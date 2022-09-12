@@ -27,13 +27,6 @@ async function createUserHandler(req, res) {
 	}
 }
 
-
-
-
-
-
-
-
 module.exports = {
 	getAllUsersHandler,
 	createUserHandler,
