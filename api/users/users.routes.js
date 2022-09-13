@@ -1,14 +1,11 @@
 const express = require('express');
 const controller = require('./users.controller');
 const { registerLogin } = require('./users.JoiSchema');
-const { isAuthenticated } = require('../../auth/auth.service');
+
 
 const {
 	getAllUsersHandler,
-	getUserByIdHandler,
 	createUserHandler,
-	updateUserHandler,
-	deleteUserHandler,
 } = controller;
 
 const router = express.Router();
@@ -99,107 +96,7 @@ router.get('/', getAllUsersHandler);
  */
 router.post('/', registerLogin, createUserHandler);
 
-/**
- * @openapi
- * /api/users/{id}:
- *  get:
- *   tags:
- *   - Users
- *   description: Get a user by id
- *   summary: Get a user by id
- *   parameters:
- *     - in: path
- *       name: id
- *       description: The id of the user
- *       required: true
- *   responses:
- *    200:
- *     description: The user found
- *     content:
- *      application/json:
- *       schema:
- *        $ref: '#/components/schemas/userResponse' 
- *    500:
- *     description: Internal server error
- *     content:
- *      application/json:
- *       schema:
- *        $ref: '#/components/schemas/error'
- */
-router.get('/:id', getUserByIdHandler);
 
-/**
- * @openapi
- * /api/users/{id}:
- *  patch:
- *   tags:
- *   - Users
- *   description: Update a user by id
- *   summary: Update a user by id 
- *   parameters:
- *    - in: path
- *      name: id
- *      description: The id of the user
- *      required: true
- *    - in: body
- *      name: body
- *      description: The body of the user
- *      required: true
- *   responses:
- *    200:  
- *     description: The user updated
- *     content:
- *      application/json:
- *       schema:
- *        $ref: '#/components/schemas/favoriteResponse'
- *    401:
- *     description: Unauthorized
- *     content:
- *      application/json:
- *       schema:
- *        $ref: '#/components/schemas/error'
- *    500:
- *     description: Internal server error
- *     content:
- *      application/json:
- *       schema:
- *        $ref: '#/components/schemas/error'
- */
-router.patch('/:id', updateUserHandler);
 
-/**
- * @openapi
- * /api/users/{id}:
- *  delete:
- *   tags:
- *   - Users
- *   description: Delete a single user by id
- *   summary: Delete a single user with id
- *   parameters:
- *     - in: path
- *       name: id
- *       description: The id of the user
- *       required: true
- *   responses:
- *    200:  
- *     description: The user deleted
- *     content:
- *      application/json:
- *       schema:
- *        $ref: '#/components/schemas/favoriteResponse'
- *    401:
- *     description: Unauthorized
- *     content:
- *      application/json:
- *       schema:
- *        $ref: '#/components/schemas/error'
- *    500:
- *     description: Internal server error
- *     content:
- *      application/json:
- *       schema:
- *        $ref: '#/components/schemas/error'
- */
-router.delete('/:id', isAuthenticated, deleteUserHandler);
 
 module.exports = router;

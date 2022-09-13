@@ -3,25 +3,17 @@ const mongoose = require('mongoose');
 
 const { app, server } = require('../index');
 const User = require('../api/users/users.model');
-const Favorites = require('../api/favorites/favorites.model');
+const Favorites = require('../api/listFavorites/listFavorite.model');
 const api = supertest(app);
 
 const initialUsers = [
 	{
-		userName: 'testUser',
-		name: 'Test name',
-		lastName: 'Test last name',
 		email: 'daip@mail.com',
 		password: 'testPassworD12',
-		favoritesList: [],
 	},
 	{
-		userName: 'testUser2',
-		name: 'Test name 2',
-		lastName: 'Test last name 2',
 		email: 'werw@mail.com',
 		password: 'testPassworD15',
-		favoritesList: [],
 	},
 ];
 
@@ -37,18 +29,10 @@ beforeEach(async () => {
 }, 1000000);
 
 describe('USERS', () => {
-	test('Get all users', async () => {
-		const response = await api.get('/api/users');
-		expect(response.body).toHaveLength(2);
-	});
-
 	test('POST Register', async () => {
 		const newUser = {
-			userName: 'Steven',
 			email: 'david@mail.com',
 			password: '*/abCD12',
-			name: 'dav',
-			lastName: 'Pinded',
 		};
 
 		await api
@@ -80,7 +64,7 @@ describe('USERS', () => {
 });
 
 describe('FAVORITES', () => {
-	test('GET all favorites', async () => {
+	test('GET all favorites by user', async () => {
 		const signIn = {
 			email: 'werw@mail.com',
 			password: 'testPassworD15',
@@ -104,10 +88,14 @@ describe('FAVORITES', () => {
 		const response = await api.post('/api/auth/local/login').send(signIn);
 		const token = response.body.token;
 		const newFavorite = {
-			title: 'testTitle',
-			description: 'testDescription',
-			url: 'testUrl',
-			name: 'testName',
+			name: 'My favorite',
+			items: [
+				{
+					title: 'My item',
+					description: 'My description',
+					url: 'https://myurl.com',
+				},
+			],
 		};
 		await api
 			.post('/api/favs')
@@ -132,10 +120,14 @@ describe('FAVORITES', () => {
 		const response = await api.post('/api/auth/local/login').send(signIn);
 		const token = response.body.token;
 		const newFavorite = {
-			title: 'testTitle',
-			description: 'testDescription',
-			url: 'testUrl',
-			name: 'testName',
+			name: 'My favorite',
+			items: [
+				{
+					title: 'My item',
+					description: 'My description',
+					url: 'https://myurl.com',
+				},
+			],
 		};
 		const response2 = await api
 			.post('/api/favs')
@@ -149,6 +141,39 @@ describe('FAVORITES', () => {
 		expect(response3.body.title).toBe(newFavorite.title);
 	}, 100000);
 
+	test('PATCH favorite by id', async () => {
+		const signIn = {
+			email: 'werw@mail.com',
+			password: 'testPassworD15',
+		};
+
+		const response = await api.post('/api/auth/local/login').send(signIn);
+		const token = response.body.token;
+		const newFavorite = {
+			name: 'My favorite',
+			items: [
+				{
+					title: 'My item',
+					description: 'My description',
+					url: 'https://myurl.com',
+				},
+			],
+		};
+		const response2 = await api
+			.post('/api/favs')
+			.set('Authorization', `Bearer ${token}`)
+			.send(newFavorite)
+			.expect(201)
+			.expect('Content-Type', /application\/json/);
+		const response3 = await api
+			.patch(`/api/favs/${response2.body._id}`)
+			.set('Authorization', `Bearer ${token}`)
+			.send({ name: 'My favorite updated' })
+			.expect(200)
+			.expect('Content-Type', /application\/json/);
+		expect(response3.body.name).toBe('My favorite updated');
+	}, 100000);
+
 	test('DELETE favorite by id ', async () => {
 		const signIn = {
 			email: 'werw@mail.com',
@@ -158,10 +183,14 @@ describe('FAVORITES', () => {
 		const response = await api.post('/api/auth/local/login').send(signIn);
 		const token = response.body.token;
 		const newFavorite = {
-			title: 'testTitle',
-			description: 'testDescription',
-			url: 'testUrl',
-			name: 'testName',
+			name: 'My favorite',
+			items: [
+				{
+					title: 'My item',
+					description: 'My description',
+					url: 'https://myurl.com',
+				},
+			],
 		};
 		const response2 = await api
 			.post('/api/favs')
