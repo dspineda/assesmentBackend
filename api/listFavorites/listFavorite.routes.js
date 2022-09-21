@@ -135,6 +135,12 @@ router.post('/', createFavoriteHandler);
  *      application/json:
  *       schema:
  *        $ref: '#/components/schemas/error'
+ *    403:
+ *     description: Access Restricted
+ *     content:
+ *      application/json:
+ *       schema:
+ *        $ref: '#/components/schemas/error'
  *    404:
  *     description: Favorite not found
  *     content:
