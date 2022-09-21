@@ -211,6 +211,46 @@ describe('FAVORITES', () => {
 	}, 100000);
 });
 
+describe('Favorite items', () => {
+	test('POST favorite items', async () => {
+		const signIn = {
+			email: 'werw@mail.com',
+			password: 'testPassworD15',
+		};
+
+		const response = await api.post('/api/auth/local/login').send(signIn);
+		const token = response.body.token;
+		const newFavorite = {
+			name: 'My favorite for add item',
+			items: [
+				{
+					title: 'My Music',
+					description: 'My description',
+					url: 'https://myurl.com',
+				},
+			],
+		};
+		const response2 = await api
+			.post('/api/favs')
+			.set('Authorization', `Bearer ${token}`)
+			.send(newFavorite)
+			.expect(201)
+			.expect('Content-Type', /application\/json/);
+		const newItem = {
+			title: 'My item 2 Video',
+			description: 'My description 2',
+			url: 'https://myurl2.com',
+		};
+		const response3 = await api
+			.post(`/api/favs/${response2.body._id}/items`)
+			.set('Authorization', `Bearer ${token}`)
+			.send(newItem)
+			.expect(201)
+			.expect('Content-Type', /application\/json/);
+		expect(response3.body.items).toHaveLength(2);
+	}, 100000);
+});
+
 afterAll(() => {
 	mongoose.connection.close();
 	server.close();
