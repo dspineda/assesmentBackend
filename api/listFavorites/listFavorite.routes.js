@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('./listFavorite.controller');
-const { isAuthenticated } = require('../../auth/auth.service');
+
 
 const {
 	getAllFavoritesHandler,
 	createFavoriteHandler,
+  createItemHandler,
 	getFavoriteByIdHandler,
 	deleteFavoriteByIdHandler,
 	updateFavoriteByIdHandler,
@@ -35,7 +36,7 @@ const {
  *       schema:
  *        $ref: '#/components/schemas/error'
  */
-router.get('/', isAuthenticated, getAllFavoritesHandler);
+router.get('/', getAllFavoritesHandler);
 
 /**
  * @openapi
@@ -88,7 +89,60 @@ router.get('/', isAuthenticated, getAllFavoritesHandler);
  *      schema:
  *       $ref: '#/components/schemas/error'
  */
-router.post('/', isAuthenticated, createFavoriteHandler);
+router.post('/', createFavoriteHandler);
+/**
+ * @openapi
+ * /api/favs/{idList}/items:
+ *  post:
+ *   tags:
+ *   - Items
+ *   description: Create an item in a list favorite by User authenticated
+ *   summary: Create an item in a list favorite by User authenticated
+ *   parameters:
+ *     - in: path
+ *       name: idList
+ *       description: Id of list favorite
+ *       required: true
+ *   requestBody:
+ *    required: true
+ *    content:
+ *     application/json:
+ *      schema:
+ *       type: object
+ *       properties:
+ *           title:
+ *            type: string
+ *            description: Title of item
+ *            example: My item
+ *           description:
+ *            type: string
+ *            description: Description of item
+ *            example: My description
+ *           url:
+ *            type: string
+ *            description: Url of item
+ *            example: https://myurl.com
+ *   responses:
+ *    201:
+ *     description: The item created
+ *     content:
+ *      application/json:
+ *       schema:
+ *        $ref: '#/components/schemas/favoriteResponse'
+ *    500:
+ *     description: Internal server error
+ *     content:
+ *      application/json:
+ *       schema:
+ *        $ref: '#/components/schemas/error'
+ *    404:
+ *     description: Favorite not found
+ *     content:
+ *      application/json:
+ *       schema:
+ *        $ref: '#/components/schemas/error'
+ */
+router.post('/:idList/items', createItemHandler);
 
 /**
  * @openapi
@@ -117,7 +171,7 @@ router.post('/', isAuthenticated, createFavoriteHandler);
  *       schema:
  *        $ref: '#/components/schemas/error'
  */
-router.get('/:id', isAuthenticated, getFavoriteByIdHandler);
+router.get('/:id', getFavoriteByIdHandler);
 
 /**
  * @openapi
@@ -176,7 +230,7 @@ router.get('/:id', isAuthenticated, getFavoriteByIdHandler);
  *        $ref: '#/components/schemas/error'
  */
 
-router.patch('/:id', isAuthenticated, updateFavoriteByIdHandler);
+router.patch('/:id', updateFavoriteByIdHandler);
 
 /**
  * @openapi
@@ -211,6 +265,6 @@ router.patch('/:id', isAuthenticated, updateFavoriteByIdHandler);
  *       schema:
  *        $ref: '#/components/schemas/error'
  */
-router.delete('/:id', isAuthenticated, deleteFavoriteByIdHandler);
+router.delete('/:id', deleteFavoriteByIdHandler);
 
 module.exports = router;
