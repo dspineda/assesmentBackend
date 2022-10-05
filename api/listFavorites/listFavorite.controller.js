@@ -30,28 +30,6 @@ async function createFavoriteHandler(req, res) {
   }
 }
 
-async function createItemHandler(req, res) {
-  const user = await req.user;
- 
-  const {idList} = req.params; 
-  const itemData = req.body;
-  try {
-    const favorite = await getFavoriteById(idList);
-
-    if (!favorite) {
-      return res.status(404).json({ error: 'Favorite not found' });
-    }
-    if (favorite.owner._id.toString() !== user._id.toString()) {
-      return res.status(403).json({ error: 'Access Restricted' });
-    }
-    favorite.items.push(itemData);
-    await favorite.save();
-    return res.status(201).json(favorite);
-  } catch (error) {
-    return res.status(500).json({ error });
-  }
-}
-
 
 async function getFavoriteByIdHandler(req, res) {
   const { id } = req.params;
@@ -90,5 +68,4 @@ module.exports = {
   getFavoriteByIdHandler,
   deleteFavoriteByIdHandler,
   updateFavoriteByIdHandler,
-  createItemHandler,
 };

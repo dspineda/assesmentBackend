@@ -242,7 +242,7 @@ describe('Favorite items', () => {
 			url: 'https://myurl2.com',
 		};
 		const response3 = await api
-			.post(`/api/favs/${response2.body._id}/items`)
+			.post(`/api/items/${response2.body._id}`)
 			.set('Authorization', `Bearer ${token}`)
 			.send(newItem)
 			.expect(201)
