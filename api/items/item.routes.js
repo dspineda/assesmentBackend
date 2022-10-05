@@ -12,7 +12,7 @@ const {
 
 /**
  * @openapi
- * /api/favs/{idList}/items:
+ * /api/items/{idList}:
  *  post:
  *   tags:
  *   - Items
@@ -72,7 +72,7 @@ router.post('/:idList', createItemHandler);
 
 /**
  * @openapi
- * /api/favs/{idList}/items/{id}:
+ * /api/items/{idList}/{idItem}:
  *  get:
  *   tags:
  *   - Items
@@ -84,7 +84,7 @@ router.post('/:idList', createItemHandler);
  *       description: Id of list favorite
  *       required: true
  *     - in: path
- *       name: id
+ *       name: idItem
  *       description: Id of item
  *       required: true
  *   responses:
@@ -111,7 +111,7 @@ router.get('/:idList/:idItem', getItemHandler);
 
 /**
  * @openapi
- * /api/favs/{idList}/items/{id}:
+ * /api/items/{idList}/{idItem}:
  *  delete:
  *   tags:
  *   - Items
@@ -121,6 +121,10 @@ router.get('/:idList/:idItem', getItemHandler);
  *     - in: path
  *       name: idList
  *       description: Id of list favorite
+ *       required: true
+ *     - in: path
+ *       name: idItem
+ *       description: Id of item
  *       required: true
  *   responses:
  *   200:
@@ -146,7 +150,7 @@ router.delete('/:idList/:idItem', deleteItemHandler);
 
 /**
  * @openapi
- * /api/favs/{idList}/items/{id}:
+ * /api/items/{idList}/{idItem}:
  *  put:
  *   tags:
  *   - Items
@@ -156,6 +160,10 @@ router.delete('/:idList/:idItem', deleteItemHandler);
  *    - in: path
  *      name: idList
  *      description: Id of list favorite
+ *      required: true
+ *    - in: path
+ *      name: idItem
+ *      description: Id of item
  *      required: true
  *   requestBody:
  *    required: true
